@@ -8,20 +8,23 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
-
+@interface ViewController () <UIScrollViewDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewHeightConstraint;
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offset = scrollView.contentOffset.y;
+    if (offset > 0) {
+        return;
+    }
+    
+    CGFloat minHeight = self.imageViewHeightConstraint.constant;
+    CGFloat height = minHeight + fabs(offset);
+    
+    self.imageView.frame = CGRectMake(0, offset, CGRectGetWidth(self.imageView.bounds), height);
 }
 
 @end
